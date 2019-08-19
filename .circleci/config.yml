@@ -1,0 +1,65 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.6.3-node-browsers
+        environment:
+          RAILS_ENV: test
+          BUNDLER_VERSION: 2.0.2
+          PGHOST: 127.0.0.1
+          PGUSER: root
+
+      - image: circleci/postgres:11.4-alpine
+        environment:
+          POSTGRES_DB: zone_test
+          POSTGRES_USER: root
+
+    steps:
+      - checkout
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - zone-{{ checksum "Gemfile.lock" }}
+            - zone-
+
+      # Update bundler
+      - run:
+          name: update bundler
+          command: |
+            gem update --system
+            gem install bundler
+
+      # Bundle install dependencies
+      - run:
+          name: Install dependencies
+          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs 4 --retry 3
+
+      - run: sudo apt install -y postgresql-client || true
+
+      - run: yarn install --check-files
+
+      # Store bundle cache
+      - save_cache:
+          key: zone-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Check coding style
+          command: bundle exec rubocop
+
+      - run:
+          name: Database Setup
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:migrate
+
+      - run:
+          name: Parallel RSpec
+          command: bin/rails test
+
+      # Save artifacts
+      - store_test_results:
+          path: /tmp/test-results
