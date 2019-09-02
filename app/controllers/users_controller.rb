@@ -7,33 +7,26 @@ class UsersController < ApplicationController
 
   def show; end
 
-  def new
-    @user = User.new
-  end
-
   def edit; end
 
-  def create
-    @user = User.new(user_params)
-
-    if @user.save
-      redirect_to @user, notice: "ユーザー #{@user.nickname}さん を作成しました。"
-    else
-      render :new
-    end
-  end
-
   def update
-    if @user.update(user_params)
-      redirect_to @user, notice: "ユーザー #{@user.nickname}さん を更新しました。"
-    else
-      render :edit
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: "ユーザー #{@user.nickname}さん を更新しました。" }
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     @user.destroy
-    redirect_to users_url, notice: "ユーザー #{@user.nickname}さん を削除しました。"
+    respond_to do |format|
+      format.html { redirect_to users_url, notice: "ユーザー #{@user.nickname}さん を削除しました。" }
+      format.json { head :no_content }
+    end
   end
 
   private
@@ -43,6 +36,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:nickname, :email, :password_digest, :uid, :last_logged_in_at)
+    params.require(:user).permit(:nickname)
   end
 end

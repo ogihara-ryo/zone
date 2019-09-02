@@ -11,10 +11,6 @@ ja:
       user:
         id: No.
         nickname: ニックネーム
-        email: メールアドレス
-        password: パスワード
-        password_confirmation: パスワード(確認)
         last_logged_in_at: 最終ログイン日時
-        sequence: 表示順
         created_at: 作成日時
         updated_at: 更新日時
