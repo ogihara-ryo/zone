@@ -16,7 +16,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
 
-    if task.save
+    if @task.save
       redirect_to @task, notice: "タスク #{@task.title}を作成しました"
     else
       render :new
@@ -24,16 +24,23 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update(task_params)
-      redirect_to @task, notice: "タスク #{@task.title}を更新しました"
-    else
-      render :edit
+    respond_to do |format|
+      if @task.update(task_params)
+        format.html { redirect_to @task, notice: "タスク #{@task.title} を更新しました。" }
+        format.json { render :show, status: :ok, location: @task }
+      else
+        format.html { render :edit }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     @task.destroy
-    redirest_to tasks_url, notice: "タスクを #{@task.title}削除しました"
+    respond_to do |format|
+      format.html { redirect_to tasks_url, notice: "タスク #{@task.title} を削除しました。" }
+      format.json { head :no_content }
+    end
   end
 
   private
