@@ -16,8 +16,9 @@ ActiveRecord::Schema.define(version: 2019_09_26_085346) do
   enable_extension "plpgsql"
 
   create_table "tasks", force: :cascade do |t|
-    t.string "title"
-    t.boolean "finished"
+    t.integer "user_id"
+    t.string "title", default: "f", null: false
+    t.boolean "finished", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
