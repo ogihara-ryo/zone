@@ -1,0 +1,26 @@
+<h1>タスクの詳細</h1>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <%= Task.human_attribute_name(:title) %>
+  <%= @task.title %>
+</p>
+
+<p>
+  <%= Task.human_attribute_name(:finished) %>
+  <%= @task.finished %>
+</p>
+
+<p>
+  <%= Task.human_attribute_name(:created_at) %>
+  <%= l(@task.created_at, format: :default) %>
+</p>
+
+<p>
+  <%= Task.human_attribute_name(:updated_at) %>
+  <%= l(@task.created_at, format: :default) %>
+</p>
+
+<%= link_to '編集', edit_task_path(@task) %> |
+<%= link_to '戻る', tasks_path %>
