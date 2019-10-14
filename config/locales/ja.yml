@@ -16,6 +16,7 @@ ja:
         created_at: 作成日時
         updated_at: 更新日時
       task:
+        id: No.
         title: タイトル
         finished: 完了
         created_at: 作成日時

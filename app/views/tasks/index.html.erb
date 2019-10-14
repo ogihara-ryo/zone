@@ -2,11 +2,15 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'タスク新規作成', new_task_path %>
+<h3>タスクの新規作成</h3>
+
+<%= render 'form', task: @task %>
+
 
 <table>
   <thead>
     <tr>
+      <th><%= Task.human_attribute_name(:id) %></th>
       <th><%= Task.human_attribute_name(:title) %></th>
       <th><%= Task.human_attribute_name(:finished) %></th>
       <th><%= Task.human_attribute_name(:created_at) %></th>
@@ -17,6 +21,7 @@
   <tbody>
     <% @tasks.each do |task| %>
       <tr>
+        <td><%= task.id %></td>
         <td><%= task.title %></td>
         <td><%= task.finished %></td>
         <td><%= task.created_at %></td>

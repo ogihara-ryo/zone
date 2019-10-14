@@ -2,24 +2,22 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
 
   def index
+    @task = Task.new
     @tasks = Task.all
   end
 
   def show; end
 
   def new
-    @task = Task.new
   end
 
   def edit; end
 
   def create
     @task = Task.new(task_params)
-
-    if @task.save
-      redirect_to @task, notice: "タスク #{@task.title}を作成しました"
-    else
-      render :new
+    respond_to do |format|
+      format.html { redirect_to tasks_url, notice: "タスク #{@task.title} を追加しました。" }
+      format.json { head :no_content }
     end
   end
 
