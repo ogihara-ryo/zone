@@ -14,9 +14,15 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: "タスク #{@task.title} を追加しました。" }
-      format.json { head :no_content }
+      if @task.save
+        format.html { redirect_to @task, notice: "タスク #{@task.title} を追加しました。" }
+        format.json { render action: 'show', status: :created, location: @task }
+      else
+        format.html { redirect_to tasks_url, notice: 'タスクを入力してください。' }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
     end
   end
 
