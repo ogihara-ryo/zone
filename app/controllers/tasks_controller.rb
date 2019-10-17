@@ -12,7 +12,8 @@ class TasksController < ApplicationController
 
   def edit; end
 
-  def create # rubocop:disable all
+  # rubocop:disable Metrics/AbcSize
+  def create
     @task = Task.new(task_params)
 
     respond_to do |format|
@@ -25,6 +26,7 @@ class TasksController < ApplicationController
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def update
     respond_to do |format|
