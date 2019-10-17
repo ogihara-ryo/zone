@@ -12,7 +12,7 @@ class TasksController < ApplicationController
 
   def edit; end
 
-  def create
+  def create # rubocop:disable all
     @task = Task.new(task_params)
 
     respond_to do |format|
