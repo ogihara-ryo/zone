@@ -1,0 +1,18 @@
+<header>
+<h1>Zone</h1>
+</header>
+
+<body>
+<% if logged_in? %>
+  <%= current_user.nickname %>
+  <%= link_to 'Logout', 'logout', method: :delete %>
+<% else %>
+  <%= link_to 'Twitter Login', '/auth/twitter' %>
+<% end %>
+  
+<% if flash[:notice] %>
+  <div class="notice">
+    <%= flash[:notice]%>
+  </div>
+<% end %>
+</body>
