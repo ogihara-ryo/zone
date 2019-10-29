@@ -14,7 +14,7 @@ class TasksController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize
   def create
-    @task = Task.new(task_params)
+    @task = Task.new(task_params.merge(user_id: current_user.id))
 
     respond_to do |format|
       if @task.save
