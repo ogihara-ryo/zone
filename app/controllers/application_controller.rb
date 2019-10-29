@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user, :logged_in?
+  before_action :login_required
 
   private
 
@@ -17,5 +18,9 @@ class ApplicationController < ActionController::Base
     return if logged_in?
 
     redirect_to root_path, alert: 'ログインしてください'
+  end
+
+  def login_required
+    return redirect_to(root_path) unless logged_in?
   end
 end
