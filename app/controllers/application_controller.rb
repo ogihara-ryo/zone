@@ -21,6 +21,6 @@ class ApplicationController < ActionController::Base
   end
 
   def login_required
-    redirect_to root_path unless current_user
+    return redirect_to(root_path) unless logged_in?
   end
 end
