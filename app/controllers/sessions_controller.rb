@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_before_action :login_required
+  
   def create
     session[:user_id] = authenticate_user(request.env['omniauth.auth']).id
     flash[:notice] = 'ユーザ認証が完了しました。'
